@@ -4,8 +4,8 @@ pipeline {
     environment {
         AIRFLOW_SERVER = '192.168.0.137'     // Replace with your Airflow server's hostname or IP
         AIRFLOW_USER = 'vishal'                     // Replace with your Airflow server's username
-        //SOURCE_FILE = '/path/to/source/file/on/jenkins'   // Replace with the path of the file on Jenkins
-        //DESTINATION_PATH = '/path/to/destination/on/airflow' // Replace with destination path on Airflow
+        SOURCE_FILE = '/workspace/*'   // Replace with the path of the file on Jenkins
+        DESTINATION_PATH = '/home/vishal' // Replace with destination path on Airflow
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
                     //sshagent(['jenkins-ssh-key-id']) { // Replace with Jenkins SSH credentials ID if using SSH agent
                         sh """
                             echo "Transferring files to Airflow server..."
-                            scp 
+                            scp -o StrictHostKeyChecking=no $SOURCE_FILE ${AIRFLOW_USER}@${AIRFLOW_SERVER}:$DESTINATION_PATH
                             echo "Files successfully transferred."
                         """
                     }
